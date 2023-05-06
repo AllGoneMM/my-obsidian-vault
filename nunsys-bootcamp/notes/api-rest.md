@@ -250,8 +250,9 @@ Empleando códigos de estado HTTP, el API REST nos puede devolver diferentes res
 
 ### CODIGOS DE ESTADO HTTP
 
+|            CODIGO                |          DESCRIPCION              |
+| ----------------------      |           ---------------------   |
 | **1XX INFORMACIONALES** | Están relacionados con el propio protocolo HTTP, no son importantes para el API REST en sí            |
-|-------------------------|-------------------------------------------------------------------------------------------------------|
 | **2XX EXITO**           | Siempre indican condiciones de éxito, es decir, que la petición se ha podido satisfacer sin problemas |
 | **3XX REDIRECCION**     | Indican que el cliente debe redirigir la petición a otra dirección                                    |
 | **4XX ERROR CLIENTE**   | Se ha producido un error debido al cliente                                                            |
