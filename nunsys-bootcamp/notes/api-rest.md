@@ -1,17 +1,12 @@
 # API REST
 ## INTRODUCCION
 ### DEFINICION
-Una **API** es un contrato que garantiza una aplicación para que otro software interactúe con ella y relice operaciones de negocio.
+Una **API** *(Application Programming Interface)* es un conjunto de reglas y protocolos que permiten la comunicación entre diferentes aplicaciones y sistemas informáticos. De esta forma, se pueden intercambiar datos y funcionalidades de manera estandarizada y automatizada, sin necesidad de conocer los detalles internos de cada sistema.
 
-**REST** es un estilo de arquitectura de software cuyo objetivo es diseñar aplicaciones desacopladas y distribuidas por la red.
-
-Las siglas de **REST** significan *Representational State Transfer*, inventado por Roy Fielding (2000). Esta propuesta estuvo inicialmente destinado a la Web. 
-
-**REST** propone un conjunto de reglas y sugerencias, pero no entra en los detalles técnicos de como debe hacerse (arquitectura de alto nivel).
-
-**REST** está centrado en los **recursos**: documentos y ficheros.
+**REST** es un estilo de arquitectura de software que busca crear aplicaciones independientes y distribuidas en la red. Fue creado por *Roy Fielding* en el año 2000 y está destinado principalmente a la Web. **REST** establece un conjunto de reglas y sugerencias para diseñar aplicaciones centradas en recursos, como documentos y archivos, sin entrar en detalles técnicos específicos de implementación.
 
 ### RESTRICCIONES
+Las **restricciones** son un conjunto de principios de diseño que deben seguirse para crear una arquitectura de software que cumpla con los principios de **REST**.
 - Usa el paradigma cliente-servidor
 - Sin estado
 - Cacheable (debe poder almacenarse en una memoria caché)
@@ -27,11 +22,7 @@ El cliente envía peticiones al servidor, que las procesa y envía una respuesta
 #### SIN ESTADO
 Esto quiere decir que el servidor no guarda datos del estado del cliente.
 
-Todas las peticiones del cliente deben ser completas, esto quiere decir que deben tener toda la información que el servicio necesita para poder procesarlas.
-
-Todas las respuestas del servidor deben ser completas.
-
-![cliente-servidor](cliente-servidor.PNG)
+Todas las peticiones, tanto del cliente como del servidor, deben ser completas, esto quiere decir que deben tener toda la información necesaria que el cliente o el servidor pueda necesitar para poder procesarlas.
 
 #### CACHEABLE
 Esto quiere decir que en medio del cliente y servidor podemos poner otro servicio que tiene una caché. Esta caché almacenará peticiones recientes junto con el tiempo de validez de dicha petición. 
@@ -39,7 +30,7 @@ Esto quiere decir que en medio del cliente y servidor podemos poner otro servici
 Esto evita que al solicitar de nuevo una misma petición saturemos el servidor.
 
 #### INTERFAZ UNIFORME
-- Debemos usar **URIs** para identificar los recursos
+- Debemos usar **URI** para identificar los recursos
 - Separar un recurso de su representación
 - Debemos usar mensajes descriptivos (método + cabecera + contenido)
 - Uso de hipermedia (HATEOAS), que son metadatos adicionales que dan contexto a los datos
@@ -52,27 +43,17 @@ Consiste en interponer capas entre el cliente y el servidor, de manera que el cl
 - Reducen complejidad, distribuye las tareas entre diferentes pequeños servicios
 - Incrementa la escalabilidad
 
-#### CODIGO BAJO DEMANDA
+#### CODIGO BAJO DEMANDA (OPCIONAL)
+- Permite enviar código al cliente para que lo ejecute, para poder ejecutarlo sobre los datos que se le han enviado: *Javascript, Applets, Flash*
 
-- Es opcional
-- Permite enviar código al cliente para que lo ejecute, para poder ejecutarlo sobre los datos que se le han enviado
-  - Javascript
-  - Applets
-  - Flash
 - El cliente debe soportar la ejecución del código
 - Es importante tener en cuenta que esto debe hacerse si la ejecución es más eficiente en el front-end, por ejemplo, la comprobación de los datos de un formulario es más eficiente en el front-end antes de mandarlos
 
 ### OTROS
-- REST se basa en el protocolo HTTP(S)
-- Los recursos se identifican con URIs
+- REST se basa en el protocolo **HTTP(S)**
+- Los recursos se identifican con **URI**
 - Se pueden incluir parámetros opcionales en la URL
-- Uso de verbos HTTP:
-  - GET
-  - POST
-  - PUT
-  - DELETE
-  - OPTIONS
-  - HEAD
+- Uso de verbos HTTP: ``GET POST PUT DELETE OPTIONS HEAD``
 - Podemos recibir/enviar metadatos usando cabeceras HTTP
 - Podemos incluir un cuerpo en cualquier formato (soporte mínimo de JSON)
 - Para conocer el resultado de las peticiones que enviamos, usamos códigos de respuesta HTTP
@@ -89,29 +70,20 @@ Es una referencia explícita a una entidad que puede identificarse y asignarse. 
 - Publicaciones en redes sociales
 - Ficheros
 - Entidades
-  - Usuario
-  - Producto
-  - Carro de la compra
-  - Factura
+> Ejemplo: Usuario, producto, factura...
 
 **REST pone a los recursos en el centro**. Con una API REST podemos añadir recursos, modificarlos, borrarlos, etc.
 
 **Un recurso y su representación/formato NO so lo mismo**, es decir que lo que recibe o envía el cliente no es el recurso, solo es una representación de este.
 
-Un recurso puede servirse en diferentes formatos, por ejemplo:
-- XML
-- JSON
-- HTML
-- Plain text
+Un recurso puede servirse en diferentes formatos
+>Ejemplo: XML, JSON, HTML, texto plano...
+
 
 Los recursos se identifican con URIs (URLs en web), y solo puede haber una relación 1:1.
 
 ### URI
-
-````
-URI = ESQUEMA :// AUTORIDAD / RUTA [? QUERY][# FRAGMENTO]
-````
-
+````URI = ESQUEMA :// AUTORIDAD / RUTA [? QUERY][# FRAGMENTO]````
 
 | TERMINO | EQUIVALENCIA EN API REST |
 | -----------| --------------|
@@ -122,11 +94,11 @@ URI = ESQUEMA :// AUTORIDAD / RUTA [? QUERY][# FRAGMENTO]
 | **Fragmento** | No se utiliza en rest |
 
 **Conteptos importantes** sobre las **URIs** en un servicio REST:
-- El separador de las URIs es **/**
--  Las URIs no deben terminar con **/**
+- El separador de las URIs es ** barra "/"**
+-  Las URIs no deben terminar con **barra "/"**
 -  Se pueden usar **guiones "-"**
 -  Usar siempre minúsculas
--  Todos los elementos de una **RUTA** identifican recursos
+-  Todos los elementos de una **ruta** identifican recursos
 -  **NO** se deben usar **guiones bajos "_"**
 -  **NO** incluir **extensiones de ficheros** (.json, .xml, .html) dentro de la URI
 
@@ -242,7 +214,7 @@ Estas cabeceras pueden ser útiles para los gestores de caché.
 |     **Content-Length**  |  NO            |    Especifica la longitud del cuerpo, usado en peticiones y respuestas. Es muy útil ya que podemos saber si hemos recibido la respuesta completa |
 |         **ETag**    |  NO |    Es una cadena vinculada con el estado del recurso. Se utiliza solo en las respuestas                  |
 |         **Cache-Control** |  NO    |       Indica cuánto tiempo puede almacenarse un recurso en caché, sin necesidad de volver a solicitar la información al servidor                   |
-|       **Expires**        |     NO  |    Es parecido a **Cache-Control**, indica hasta cuándo puede alamacenarse un recurso (fecha + hora), sin embargo, tiene el mismo uso                  |
+|       **Expires**        |     NO  |    Es parecido a Cache-Control, indica hasta cuándo puede alamacenarse un recurso (fecha + hora), sin embargo, tiene el mismo uso                  |
 
 Podemos incluir cabeceras HTTP propias mediante el prefijo ````X-````. Hay que tener en cuenta que las cabeceras personalizadas no deben cambiar el comportamiento de los métodos HTTP.
 ## RESPUESTAS HTTP
@@ -297,14 +269,13 @@ Empleando códigos de estado HTTP, el API REST nos puede devolver diferentes res
 > Importante: Todas las respuestas de error 5xx deben incluir un cuerpo con información sobre el error producido
 ## EJEMPLOS
 ### OBTENER UN RECURSO
-**Petición**
+#### PETICION
 ````http
 GET http://nunsys.com/api/provincias/46
 Accept: application/json
 ````
 Esta petición utiliza el *método GET*, indicando que queremos obtener el recurso y usamos la cabecera *Accept* para indicar el formato en el que queremos recibir el recurso
-\
-**Respuesta**
+#### RESPUESTA
 ````http
 //Cabecera de la respuesta
 200 - OK
@@ -391,16 +362,16 @@ Mockoon es un software que permite emular una API funcional, esto permite realiz
     }
     ````
 #### EXTRA
-- Podemos introducir un pipe en nuestra petición, dentro de nuestro servicio:
-    ````javascript
-    export class ExampleService {
+ Podemos introducir un pipe en nuestra petición, dentro de nuestro servicio:
+ ````typescript
+export class ExampleService {
 
-      constructor(private http: HttpClient){}
+	constructor(private http: HttpClient){}
 
-      public getModel() : Obsevable<ModelClass[]> {
+	public getModel() : Obsevable<ModelClass[]> {
         const urlEndPoint: string = "http://localhost:3000/models";
         return this.http.get<ModelClass[]>(urlEndPoint)
         .pipe(retry(3), catchError(this.handleError())); //en caso de fallo, reintenta la petición 3 veces más. En caso de seguir dando error, lo gestionamos
-      }
     }
-    ````
+}
+````
