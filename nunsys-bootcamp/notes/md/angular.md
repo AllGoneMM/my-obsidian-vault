@@ -6,6 +6,7 @@
 | `npm -v` | Indica la versión actual de npm |
 | `nvm list` | Proporciona una lista con todas las versiones de node |
 | `nvm use [version]` | Cambia la versión de node a la indicada por parámetros |
+| `npm install [package]` | Instala el paquete indicado |
 ## ANGULAR CLI CHEAT SHEET
 | COMANDO | DESCRIPCION |
 | ------------ | ----------------- |
@@ -19,7 +20,8 @@
 | `{{nombre-variable}}` | Se trata de interpolación, nos permite introducir el valor de una variable de nuestro controlador dentro de nuestra vista |
 | `<a [routerLink="['ruta']"]>LINK</a>` | Se utiliza como atributo dentro de la etiqueta `<a></a>` y permite vincularlo con la ruta de otro componente. Debe usarse en combinación con `<router-outlet></router-outlet>` | 
 | `(click)= "nombre-funcion()"` | Permite vincular un elemento con una función de nuestro controlador que se ejecutará al hacer click |
-
+| `[routerLinkActive]="['active']"` |          |
+| `[routerLinkActiveOptions]="{exact:true}"` |                     |
 ## ANGULAR TYPESCRIPT CHEAT SHEET
 | CLASE      | METODO                 | ESTATICO | DESCRIPCION                                   |
 |------------|------------------------|----------|-----------------------------------------------|
@@ -334,3 +336,80 @@ export class AppComponent {
 	}
 }
 ````
+### NAVEGACION CON BOOTSTRAP NAVBAR
+*Bootstrap* es un **Framework** basado en *HTML, CSS y JavaScript* que permite crear páginas web y aplicaciones móviles de manera rápida y eficiente. 
+
+*Bootstrap* incluye una serie de componentes como botones, formularios, barras de navegación... que se puede usar para construir una interfaz sin necesidad de escribir mucho código.
+#### INSTALAR BOOTSTRAP EN ANGULAR
+Existen dos maneras de incluir *Bootstrap* en nuestro proyecto:
+##### CDN
+Enlazando la cabecera de nuestro archivo HTML a las hojas de estilo *CSS y JavaScript*:
+	
+````html
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0alpha3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"/>
+````
+	
+ >Importante: Esta no es la mejor manera de instalar **Bootstrap**, ya que estamos acoplando nuestra aplicación a un *cdn*, además de resultar en un peor rendimiento
+##### LOCAL
+Descargando de manera local *Bootstrap*:
+````bash
+npm install bootstrap
+````
+Esto nos creará un nuevo directorio dentro de nuestro directorio `node_modules`.
+
+Para vincular nuestras vistas HTML con *Bootstrap* nos dirigimos a nuestro fichero de configuración de proyecto de Angular `angular.json` y añadimos la hoja de estilo y *JavaScript*:
+````json
+"styles": [
+	"src/styles.scss",
+	"./node_modules/bootstrap/dist/css/bootstrap.min.css"
+ ],
+"scripts": ["./node_modules/bootstrap/dist/js/bootstrap.min.css"]
+````
+#### UTILIZANDO BOOTSTRAP NAVBAR
+Una vez instalado *Bootstrap* en nuestro proyecto, ya deberíamos de poder utilizar las diferentas herramientas que nos ofrece, como por ejemplo, el componente **Navbar**:
+
+````html
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">HOME</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">ABOUT</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+````
+Modificamos el código e implementamos la navegación por enlaces mediante **routerLink**:
+````html
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['']">HOME</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['about']">ABOUT</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+````
+
+##### DESTACANDO ELEMENTOS ACTIVOS CON BOOTSTRAP
+
