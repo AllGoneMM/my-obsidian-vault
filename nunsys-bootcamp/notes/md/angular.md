@@ -1,55 +1,4 @@
 # ANGULAR
-INDICE
-
-1. [[#NODE CHEAT SHEET|NODE CHEAT SHEET]]
-1. [[#ANGULAR CLI CHEAT SHEET|ANGULAR CLI CHEAT SHEET]]
-1. [[#ANGULAR DIRECTIVAS CHEAT SHEET|ANGULAR DIRECTIVAS CHEAT SHEET]]
-1. [[#ANGULAR TYPESCRIPT CHEAT SHEET|ANGULAR TYPESCRIPT CHEAT SHEET]]
-1. [[#INTRODUCCION|INTRODUCCION]]
-	1. [[#INTRODUCCION#QUE ES ANGULAR|QUE ES ANGULAR]]
-	1. [[#INTRODUCCION#OTROS FRAMEWORKS DE JAVASCRIPT|OTROS FRAMEWORKS DE JAVASCRIPT]]
-1. [[#ARQUITECTURA|ARQUITECTURA]]
-	1. [[#ARQUITECTURA#COMPONENTES|COMPONENTES]]
-		1. [[#COMPONENTES#ESTRUCTURA DE UN COMPONENTE|ESTRUCTURA DE UN COMPONENTE]]
-	1. [[#ARQUITECTURA#SERVICIOS|SERVICIOS]]
-	1. [[#ARQUITECTURA#DIRECTIVAS|DIRECTIVAS]]
-	1. [[#ARQUITECTURA#PIPES|PIPES]]
-	1. [[#ARQUITECTURA#MODULOS|MODULOS]]
-	1. [[#ARQUITECTURA#ENRUTAMIENTO|ENRUTAMIENTO]]
-1. [[#INSTALACION DE ANGULAR|INSTALACION DE ANGULAR]]
-1. [[#ESTRUCTURA DE UN PROYECTO ANGULAR|ESTRUCTURA DE UN PROYECTO ANGULAR]]
-1. [[#CONFIGURACION PARA MAXIMA COMPATIBILIDAD|CONFIGURACION PARA MAXIMA COMPATIBILIDAD]]
-1. [[#COMPONENTES|COMPONENTES]]
-	1. [[#COMPONENTES#CONTROLADOR|CONTROLADOR]]
-	1. [[#COMPONENTES#ESTABLECER COMPONENTE DE INICIO|ESTABLECER COMPONENTE DE INICIO]]
-	1. [[#COMPONENTES#INTERPOLACION|INTERPOLACION]]
-1. [[#ENRUTAMIENTO|ENRUTAMIENTO]]
-	1. [[#ENRUTAMIENTO#BASES|BASES]]
-	1. [[#ENRUTAMIENTO#NAVEGACION CON ENLACES|NAVEGACION CON ENLACES]]
-	1. [[#ENRUTAMIENTO#NAVEGACION CON CODIGO|NAVEGACION CON CODIGO]]
-	1. [[#ENRUTAMIENTO#NAVEGACION CON BOOTSTRAP NAVBAR|NAVEGACION CON BOOTSTRAP NAVBAR]]
-		1. [[#NAVEGACION CON BOOTSTRAP NAVBAR#INSTALAR BOOTSTRAP EN ANGULAR|INSTALAR BOOTSTRAP EN ANGULAR]]
-			1. [[#INSTALAR BOOTSTRAP EN ANGULAR#CDN|CDN]]
-			1. [[#INSTALAR BOOTSTRAP EN ANGULAR#LOCAL|LOCAL]]
-		1. [[#NAVEGACION CON BOOTSTRAP NAVBAR#UTILIZANDO BOOTSTRAP NAVBAR|UTILIZANDO BOOTSTRAP NAVBAR]]
-			1. [[#UTILIZANDO BOOTSTRAP NAVBAR#DESTACANDO ELEMENTOS ACTIVOS CON BOOTSTRAP|DESTACANDO ELEMENTOS ACTIVOS CON BOOTSTRAP]]
-	1. [[#ENRUTAMIENTO#PASO DE PARAMETROS EN LA URL|PASO DE PARAMETROS EN LA URL]]
-	1. [[#ENRUTAMIENTO#PASO DE PARAMETROS CON QUERY|PASO DE PARAMETROS CON QUERY]]
-1. [[#DIRECTIVAS|DIRECTIVAS]]
-	1. [[#DIRECTIVAS#NGFOR|NGFOR]]
-	1. [[#DIRECTIVAS#NGIF|NGIF]]
-	1. [[#DIRECTIVAS#NGCLASS|NGCLASS]]
-1. [[#PIPES|PIPES]]
-	1. [[#PIPES#PIPES DE ANGULAR|PIPES DE ANGULAR]]
-		1. [[#PIPES DE ANGULAR#UPPERCASE|UPPERCASE]]
-		1. [[#PIPES DE ANGULAR#LOWECASE|LOWECASE]]
-		1. [[#PIPES DE ANGULAR#TITLECASE|TITLECASE]]
-		1. [[#PIPES DE ANGULAR#NUMBER|NUMBER]]
-			1. [[#NUMBER#LOCALE|LOCALE]]
-		1. [[#PIPES DE ANGULAR#DATE|DATE]]
-	1. [[#PIPES#PIPE PERSONALIZADO|PIPE PERSONALIZADO]]
-1. [[#TYPESCRIPT|TYPESCRIPT]]
-
 ## NODE CHEAT SHEET
 | COMANDO | DESCRIPCION |
 | ------------- | --------------- |
@@ -742,3 +691,59 @@ export class PruebaPipePipe implements PipeTransform {
 ````
 
 ## TYPESCRIPT
+En este apartado vamos a ver lo básico del lenguaje de programación **TypeScript**, que es el utilizado en Angular. 
+
+Es importante tener conocimientos básicos de este lenguaje para poder desarrollar aplicaciones en Angular sin dificultades.
+
+>Importante: TypeScript es un Framework que dota de tipado a JavaScript, permitiendo una mejor experiencia en tiempo de desarrollo
+
+### TIPOS
+| TIPO | DESCRIPCION |
+| ----- | ---------------- |
+| `number` | Representa números, tanto enteros como de punto flotante |
+| `string` | Representa cadenas de texto |
+| `boolean` |Representa valores verdadero/falso |
+| `null` | Representa un valor nulo|
+| `undefined` |Representa un valor indefinido |
+| `any` |Representa cualquier tipo de valor |
+| `void` | Representa la ausencia de un valor|
+| `never` | Representa un valor que nunca ocurre|
+| `object` |Representa cualquier objeto no primitivo (es decir, no number, string, boolean, null o undefined) |
+| `Array<T>` |Representa una matriz de elementos del tipo T |
+| `Tuple` |Representa una matriz de un número fijo de elementos, donde se conoce el tipo y la posición de cada elemento |
+| `Enum` |Permite definir un conjunto de valores con nombre |
+| `Function` |Representa una función, con una lista de parámetros y un tipo de retorno |
+
+#### DECLARACION DE VARIABLES
+En *TypeScript*, una variable puede tener más de un tipo, esto lo podemos conseguir separando los diferentes tipos mediante tuberías:
+````typescript
+variable : number | undefined | string;
+````
+
+También podemos colocar un **interrogante ?** al final del nombre de nuestra variable, para indicarle a *TypeScript* que nuestra variable puede ser **undefined**:
+````typescript
+variable? : number;
+````
+
+Si intentamos utilizar en nuestro código alguna variable que **no se ha instanciado** tendremos **errores de compilación**. Para solucionar esto deberemos realizar cierta comprobaciones mediante condicionales o bien forzando la compilación sin realizar comprobaciones mediante una **exclamación !**:
+````typescript
+notInstancedVariable? : string;
+
+myMethod() : void {
+	console.log(this.notInstancedVariable!);
+}
+myMethod2() : void {
+	if (this.notInstancedVariable){
+		console.log(this.notInstancedVariable);
+	} else {
+		console.log("Error");
+	}
+}
+````
+Las variables de la clase (campos, propiedades) y las variables dentro de nuestros métodos de clase se declaran de manera diferente:
+- Las propiedades por defecto serán `public` y no necesitan utilizar `const` o `let`
+- Las variables de nuestros métodos, para ser declaradas es obligatorio que especifiquemos si va a ser una variable o una constante `const` o `let`
+
+>Importante: Es importante utilizar constantes o variables según corresponda
+### ARRAYS
+En *TypeScript* los arrays actuan como listas, es decir, que pueden ampliar y reducir su tamaño una vez instanciados.
