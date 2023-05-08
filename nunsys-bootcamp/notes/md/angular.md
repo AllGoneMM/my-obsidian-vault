@@ -1,4 +1,55 @@
 # ANGULAR
+INDICE
+
+1. [[#NODE CHEAT SHEET|NODE CHEAT SHEET]]
+1. [[#ANGULAR CLI CHEAT SHEET|ANGULAR CLI CHEAT SHEET]]
+1. [[#ANGULAR DIRECTIVAS CHEAT SHEET|ANGULAR DIRECTIVAS CHEAT SHEET]]
+1. [[#ANGULAR TYPESCRIPT CHEAT SHEET|ANGULAR TYPESCRIPT CHEAT SHEET]]
+1. [[#INTRODUCCION|INTRODUCCION]]
+	1. [[#INTRODUCCION#QUE ES ANGULAR|QUE ES ANGULAR]]
+	1. [[#INTRODUCCION#OTROS FRAMEWORKS DE JAVASCRIPT|OTROS FRAMEWORKS DE JAVASCRIPT]]
+1. [[#ARQUITECTURA|ARQUITECTURA]]
+	1. [[#ARQUITECTURA#COMPONENTES|COMPONENTES]]
+		1. [[#COMPONENTES#ESTRUCTURA DE UN COMPONENTE|ESTRUCTURA DE UN COMPONENTE]]
+	1. [[#ARQUITECTURA#SERVICIOS|SERVICIOS]]
+	1. [[#ARQUITECTURA#DIRECTIVAS|DIRECTIVAS]]
+	1. [[#ARQUITECTURA#PIPES|PIPES]]
+	1. [[#ARQUITECTURA#MODULOS|MODULOS]]
+	1. [[#ARQUITECTURA#ENRUTAMIENTO|ENRUTAMIENTO]]
+1. [[#INSTALACION DE ANGULAR|INSTALACION DE ANGULAR]]
+1. [[#ESTRUCTURA DE UN PROYECTO ANGULAR|ESTRUCTURA DE UN PROYECTO ANGULAR]]
+1. [[#CONFIGURACION PARA MAXIMA COMPATIBILIDAD|CONFIGURACION PARA MAXIMA COMPATIBILIDAD]]
+1. [[#COMPONENTES|COMPONENTES]]
+	1. [[#COMPONENTES#CONTROLADOR|CONTROLADOR]]
+	1. [[#COMPONENTES#ESTABLECER COMPONENTE DE INICIO|ESTABLECER COMPONENTE DE INICIO]]
+	1. [[#COMPONENTES#INTERPOLACION|INTERPOLACION]]
+1. [[#ENRUTAMIENTO|ENRUTAMIENTO]]
+	1. [[#ENRUTAMIENTO#BASES|BASES]]
+	1. [[#ENRUTAMIENTO#NAVEGACION CON ENLACES|NAVEGACION CON ENLACES]]
+	1. [[#ENRUTAMIENTO#NAVEGACION CON CODIGO|NAVEGACION CON CODIGO]]
+	1. [[#ENRUTAMIENTO#NAVEGACION CON BOOTSTRAP NAVBAR|NAVEGACION CON BOOTSTRAP NAVBAR]]
+		1. [[#NAVEGACION CON BOOTSTRAP NAVBAR#INSTALAR BOOTSTRAP EN ANGULAR|INSTALAR BOOTSTRAP EN ANGULAR]]
+			1. [[#INSTALAR BOOTSTRAP EN ANGULAR#CDN|CDN]]
+			1. [[#INSTALAR BOOTSTRAP EN ANGULAR#LOCAL|LOCAL]]
+		1. [[#NAVEGACION CON BOOTSTRAP NAVBAR#UTILIZANDO BOOTSTRAP NAVBAR|UTILIZANDO BOOTSTRAP NAVBAR]]
+			1. [[#UTILIZANDO BOOTSTRAP NAVBAR#DESTACANDO ELEMENTOS ACTIVOS CON BOOTSTRAP|DESTACANDO ELEMENTOS ACTIVOS CON BOOTSTRAP]]
+	1. [[#ENRUTAMIENTO#PASO DE PARAMETROS EN LA URL|PASO DE PARAMETROS EN LA URL]]
+	1. [[#ENRUTAMIENTO#PASO DE PARAMETROS CON QUERY|PASO DE PARAMETROS CON QUERY]]
+1. [[#DIRECTIVAS|DIRECTIVAS]]
+	1. [[#DIRECTIVAS#NGFOR|NGFOR]]
+	1. [[#DIRECTIVAS#NGIF|NGIF]]
+	1. [[#DIRECTIVAS#NGCLASS|NGCLASS]]
+1. [[#PIPES|PIPES]]
+	1. [[#PIPES#PIPES DE ANGULAR|PIPES DE ANGULAR]]
+		1. [[#PIPES DE ANGULAR#UPPERCASE|UPPERCASE]]
+		1. [[#PIPES DE ANGULAR#LOWECASE|LOWECASE]]
+		1. [[#PIPES DE ANGULAR#TITLECASE|TITLECASE]]
+		1. [[#PIPES DE ANGULAR#NUMBER|NUMBER]]
+			1. [[#NUMBER#LOCALE|LOCALE]]
+		1. [[#PIPES DE ANGULAR#DATE|DATE]]
+	1. [[#PIPES#PIPE PERSONALIZADO|PIPE PERSONALIZADO]]
+1. [[#TYPESCRIPT|TYPESCRIPT]]
+
 ## NODE CHEAT SHEET
 | COMANDO | DESCRIPCION |
 | ------------- | --------------- |
@@ -13,6 +64,7 @@
 | `ng new [nombre]` | Crea un nuevo proyecto Angular dentro del directorio actual |
 | `ng serve -o` | Inicia el servidor de desarrollo de Angular y el parámetro `--open` indica que se debe abrir automáticamente en el navegador |
 |  `ng generate component [nombre]`                   |    Crea un nuevo componente con el nombre especificado                         |
+| `ng generate pipe [nombre]` | Crea un nuevo pipe con el nombre indicado |
 ## ANGULAR DIRECTIVAS CHEAT SHEET
 | DIRECTIVA | DESCRIPCION |
 | ------------ | --------------- |
@@ -22,10 +74,15 @@
 | `(click)= "nombre-funcion()"` | Permite vincular un elemento con una función de nuestro controlador que se ejecutará al hacer click |
 | `[routerLinkActive]="['active']"` |  Esta directiva se utiliza para aplicar una clase CSS a un elemento cuando el enlace de navegación asociado (`routerLink`) se encuentre activo        |
 | `[routerLinkActiveOptions]="{exact:true}"` |    Esta directiva se usa conjuntamente con `routerLinkActive` y se utiliza para indicarle a Angular que solo aplique el estilo si la ruta es exactamente a la indicada                 |
+| `*ngFor="let e for elements"` | Permite duplicar una etiqueta **HTML** según el número de elementos que haya en la lista indicada |
+| `*ngIf="{condición/método de comprobación}"` | Esta directiva nos permite **mostrar/ocultar** elementos dependiendo de ciertas condiciones |
+| `[ngClass]="condición/método ? 'clase-para-verdadero' : 'clase-para-falso'"` | Esta directiva permite aplicar una clase u otra a un elemento dependiendo de una condición |
 ## ANGULAR TYPESCRIPT CHEAT SHEET
 | CLASE      | METODO                 | ESTATICO | DESCRIPCION                                   |
 |------------|------------------------|----------|-----------------------------------------------|
 | **Router** | ``navigate("['ruta']")`` | NO       | Navega a la ruta que se le pasa por parámetro. Su función es la misma que la directiva `routerLink` |
+| **ActivatedRoute** | ``snapshot.paramMap.get('nombre-parametro')`` | NO | Nos permite capturar el valor del parámetro que se ha pasado mediante la URL de un componente a otro |
+| **ActivatedRoute** | `snapshot.queryParamMap.get("nombre-parametro")` | NO | Es similar al método anterior. Nos permite capturar el valor de una **Query** |
 ## INTRODUCCION
 ### QUE ES ANGULAR
 - **Angular es un *Framework* de *JavaScript/TypeScript*** que nos permite **desarrollar aplicaciones *front-end***
@@ -478,14 +535,210 @@ Para conseguir esto debemos:
 	````
 	>Importante: Debemos seguir el método de navegación por código
 
-4. Importamos e inyectamos la clase `ActivateRoute`
+4. Importamos e inyectamos la clase `ActivatedRoute`, que nos permite obtener información sobre la ruta activa actual:
+	````typescript
+	import {ActivatedRoute} from '@angular/router';
+	//...
+	constructor(private activatedRoute: ActivatedRoute){}
+	````
 
-1. La captura del parámetro dentro de `ArticleDetailComponent`, debe realizarse dentro del método `ngOnInit()`:
+5. La captura del parámetro dentro de `ArticleDetailComponent`, debe realizarse dentro del método `ngOnInit()`:
 	````typescript
 	export class ArticleDetailComponent implements OnInit {
 		idArticle?: string; // En esta variable guardaremos el valor capturado
 		ngOnInit(): void {
-			
+			this.idArticle = this.activatedRoute.snapshot.paramMap.get('idArticle') ?? undefined; // El parámetro indicado en este método debe coincidir con lo escrito en nuestro fichero de enrutamiento
 		}
 	}
 	````
+	>Importante: La sintaxis utilizada con `??` quiere decir que si el valor es nulo, se le asigna lo indicado a la derecha
+	
+6. Representamos la información en nuestra vista detalle utilizando interpolación `{{idArticle}}`
+### PASO DE PARAMETROS CON QUERY
+Recordemos que una **Query** se introduce después de un recurso con un interrogante **?**.
+> Ejemplo: localhost:3001/busqueda**?q=angular&orden=asc&limite=10**
+
+Al igual que anteriormente, debemos emplear la clase `ActivatedRoute`
+> Importante: No es necesario realizar ninguna modificación en nuestro fichero de rutas
+
+Los pasos a seguir son los mismos que en el apartado anterior, sin necesidad de tener que modificar el fichero de rutas y utilizando otro método de la clase `ActivatedRoute` llamado `snapshot.queryParamMap.get("nombre-parametro")`
+
+Pongamos que es posible que recibamos una **query** que se llame **mode**, la cual nos indicará si estamos en modo oscuro o claro:
+````URL
+localhost:4200/articles?mode=dark
+localhost:4200/articles?mode=light
+````
+
+Podemos capturar esta **Query** usando `ActivatedRoute`:
+
+```typescript
+mode?: string;
+
+ngOnInit(): void {
+	this.mode = this.activatedRouter.snapshot.queryParamMap.get("mode") ?? undefined;
+}
+```
+
+## DIRECTIVAS
+En este apartado vamos a ver las **directivas** más utilizadas y su función.
+>Importante: Existen diferentes tipos de directivas en **Angular**, dependiendo del tipo de directiva, su sintaxis y uso dentro de nuestra vista será diferente, es por esto que hay directivas que se escriben con **corchetes []** y otras con **asterisco \***
+### NGFOR
+Esta directiva es muy útil, ya que nos premite **recorrer una lista** de objetos que tengamos en nuestro controlador.
+
+Pongamos que tenemos una lista de **string**, y por cada elemento de esta lista, queremos generar una representación en nuestra vista **HTML**:
+````typescript
+elements: string[] = ["Elemento 1", "Elemento 2", "Elemento 3"];
+````
+Mediante `*ngFor` podemos, por cada elemento de esta lista, generar una etiqueta **HTML** con la información del elemento:
+````html
+<div *ngFor="let e for elements">
+	<p>
+		{{e}}
+	</p>
+</div>
+````
+
+### NGIF
+Esta directiva permite **ocultar/mostrar** un elemento **HTML** dependiendo de si se cumplen ciertos criterios que podemos establecer.
+
+Supongamos que tenemos dos párrafos, y los queremos ocultar/mostrar según ciertas condiciones. Para ello emplearemos la directiva `ngIf`
+
+````html
+<p *ngIf="{elements.length == 3}">PARRAFO 1</p>
+<p *ngIf="{elements.length == 2}">PARRAFO 2</p>
+````
+>Importante: Esto hará que el párrafo 1 se muestre solo si hay 3 elementos en nuestra lista *elements* y el párrafo 2 si hay 2
+
+Introducir las condiciones directamente dentro de la directiva `ngIf` no es la manera más limpia de utilizar esta directiva. Lo más adecuado sería crear un método en nuestro controlador que realizase las comprobaciones necesarias y nos devolviera `true` o `false`:
+
+````typescript
+showElement : boolean = true;
+
+comprobation() : boolean {
+	return this.showElement;
+}
+````
+
+Utilizamos el método como valor de `ngIf`:
+
+````html
+<p *ngIf="comprobation()">PARRAFO 1</p>
+<p *ngIf="{comprobation()}">PARRAFO 2</p>
+````
+
+### NGCLASS
+Esta directiva permite dar un **estilo dinámico** a un elemento dependiendo de una condición, para poder hacer esto debemos:
+1. Creamos una clase en la hoja de estilo de nuestro componente:
+	````css
+	.GreenColor{
+		color: green;
+	}
+	.RedColor{
+		color: red;
+	}
+	````
+2. Utilizamos `ngClass` dentro de nuestro elemento:
+	````html
+	<p [ngClass]="comprobation() ? 'GreenColor' : 'RedColor'">TEXTO</p>	
+	````
+	Esto aplicará la clase `GreenColor` al elemento si la condición es `true` y `RedColor` si la condición es `false`
+
+## PIPES
+En este apartado se explica qué son los **pipes o transformadores** de datos en **Angular** y cómo se pueden utilizar en una aplicación. 
+
+Se muestran los tipos de transformaciones de datos que se pueden hacer con los pipes, como fechas, cadenas y números, y también se explica cómo se pueden crear pipes personalizados en la aplicación. 
+
+### PIPES DE ANGULAR
+Angular proporciona múltiples **pipes** que nos pueden resultar muy útiles.
+
+Pongamos que tenemos las siguientes variables en nuestro controlador:
+````typescript
+text: string = "text to transform";
+numbers: number = 1200.750;
+today : Date = new Date();
+name : string = "MARIO LOPEZ, SERRANO";
+````
+
+#### UPPERCASE
+Permite cambiar todas las letras a mayúscula:
+````html
+{{string | uppercase}} <!-- RESULTADO: TEXT TO TRANSFORM -->
+````
+
+#### LOWECASE
+Permite cambiar todas las letras a minúscula:
+````html
+{{string | uppercase}} <!-- text to transform -->
+````
+
+#### TITLECASE
+Cambia la primera letra de cada palabra a mayúscula:
+````html
+{{string | tittlecase}} <!-- RESULTADO: Text To Transform -->
+````
+
+#### NUMBER
+Formatea el valor en un número con el formato que nosotros queramos:
+````html
+{{numbers | number: '1.0-2'}} <!-- RESULTADO: 1200.750 -->
+````
+##### LOCALE
+Podemos usar **locale** para establecer cierto formato a nuestras pipes dependiendo del país. Para esto debemos:
+1. Importamos dos clases en nuestro componente: `localeEs` y `registerLocaleData`. A continuación registramos el **locale** con el método estático `registerLocaleData()`
+	````typescript
+	import localeEs from '@angular/common/es';
+	import { registerLocaleData } from '@angular/common'
+
+	registerLocaleData(localeEs);
+	````
+2. Utilizamos el **locale** dentro de nuestro **pipe**:
+	````html
+	{{numbers | number: '1.0-2':'es-ES'}} <!-- RESULTADO: 1.200,750 -->
+	````
+#### DATE
+Formatea el valor en una fecha con el formato que nosotros queramos:
+````html
+{{today | date: 'shortDate':undefined:'es-Es'}} <!-- RESULTADO: 12/4/22 -->
+````
+````html
+{{today | date:'dd/MM/yyyy'}} <!-- RESULTADO: 12/04/2022 -->
+````
+
+### PIPE PERSONALIZADO
+Para poder generar un nuevo **pipe** en angular usamos **Angular CLI**:
+````bash
+ng generate pipe [nombre]
+````
+
+Esto nos generará dos ficheros, siendo `.spec` un fichero de pruebas: `[nombre-pipe].pipe.ts` y `[nombre-pipe].pipe.spec.ts`.
+
+Nuestro fichero generado tendrá el siguiente aspecto:
+````typescript
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'pruebaPipe'
+})
+export class PruebaPipePipe implements PipeTransform {
+  transform(value: unknown, ...args: unknown[]): unknown {
+    return null;
+  }
+}
+````
+Debemos modificar la función `transform()` a nuestro gusto, por ejemplo digamos que queremos recibir la variable `name` y queremos eliminar las comas y cambiar la estructura del nombre:
+````typescript
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'pruebaPipe'
+})
+export class PruebaPipePipe implements PipeTransform {
+  transform(value: string): string {
+	const splitedName: string[] = value.split(",");
+	// ... Transformaciones necesarias
+    return null;
+  }
+}
+````
+
+## TYPESCRIPT
