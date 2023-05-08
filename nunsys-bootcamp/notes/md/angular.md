@@ -20,8 +20,8 @@
 | `{{nombre-variable}}` | Se trata de interpolación, nos permite introducir el valor de una variable de nuestro controlador dentro de nuestra vista |
 | `<a [routerLink="['ruta']"]>LINK</a>` | Se utiliza como atributo dentro de la etiqueta `<a></a>` y permite vincularlo con la ruta de otro componente. Debe usarse en combinación con `<router-outlet></router-outlet>` | 
 | `(click)= "nombre-funcion()"` | Permite vincular un elemento con una función de nuestro controlador que se ejecutará al hacer click |
-| `[routerLinkActive]="['active']"` |          |
-| `[routerLinkActiveOptions]="{exact:true}"` |                     |
+| `[routerLinkActive]="['active']"` |  Esta directiva se utiliza para aplicar una clase CSS a un elemento cuando el enlace de navegación asociado (`routerLink`) se encuentre activo        |
+| `[routerLinkActiveOptions]="{exact:true}"` |    Esta directiva se usa conjuntamente con `routerLinkActive` y se utiliza para indicarle a Angular que solo aplique el estilo si la ruta es exactamente a la indicada                 |
 ## ANGULAR TYPESCRIPT CHEAT SHEET
 | CLASE      | METODO                 | ESTATICO | DESCRIPCION                                   |
 |------------|------------------------|----------|-----------------------------------------------|
@@ -412,4 +412,80 @@ Modificamos el código e implementamos la navegación por enlaces mediante **rou
 ````
 
 ##### DESTACANDO ELEMENTOS ACTIVOS CON BOOTSTRAP
+Para esto utilizaremos las directivas `routerLinkActive` y `routerLinkActiveOptions`:
 
+Pongamos que utilizando el ejemplo anterior, queremos destacar los enlaces de navegación dependiendo de la ruta en la que nos encontremos.
+
+````html
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" [routerLink]="['']">HOME</a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" [routerLink]="['about']">ABOUT</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+````
+>Importante: Debemos usar `routerLinkActiveOptions` debido a que `routerLinkActive`, por defecto, interpreta las de izquierda a derecha
+
+Una vez hecho esto, para poder aplicar el estilo que queramos, debemos dirigirnos a nuestro **CSS**:
+````css
+.navbar-nav li.active > a{
+	background-color: rgb(255,0,0);
+	color: rgb(0,255,0);
+}
+````
+
+### PASO DE PARAMETROS EN LA URL
+En este apartado vamos a ver cómo podemos **pasar parámetros de un componente a otro** a través de la **URL**.
+
+Pongamos que tenemos dos componentes:
+- En uno de ellos, llamado `ArticleListComponent` tenemos una lista de artículos
+- Nuestro otro componente, `ArticleDetailComponent`, nos muestra una vista detalle con información sobre un artículo
+
+Lo que queremos conseguir es que al hacer click en uno de los artículos de `ArticleListComponent` se nos abra `ArticleDetailComponent` con la información de dicho artículo.
+
+Para conseguir esto debemos:
+1. Añadir las rutas de nuestros dos componentes a la lista de rutas dentro de `app-routing.module.ts`:
+	````typescript
+	const routes: Routes = [
+		{path: 'article-list', component: ArticleListComponent},
+		{path: 'article-detail', component: ArticleDetailComponent}
+	];
+	````
+2. Para indicarle a **Angular** que podríamos recibir un parámetro en la URL debemos añadir lo siguiente a nuestra ruta `'ruta/:nombre-parámetro'`:
+	````typescript
+		const routes: Routes = [
+		{path: 'article-list', component: ArticleListComponent},
+		{path: 'article-detail/:idArticle', component: ArticleDetailComponent}
+	];
+	````
+3. En el controlador de `ArticleListComponent` deberemos crear un método que reciba un parámetro que será el **ID** de nuestro artículo:
+	````typescript
+	public navigateToArticleDetail(idArticle : number): void {
+		this.router.navigate(['article-detail','idArticle']) //Cada elemento que se introduzca separado por comas es como si fuera una barra / en la URL
+	}
+	````
+	>Importante: Debemos seguir el método de navegación por código
+
+4. Importamos e inyectamos la clase `ActivateRoute`
+
+1. La captura del parámetro dentro de `ArticleDetailComponent`, debe realizarse dentro del método `ngOnInit()`:
+	````typescript
+	export class ArticleDetailComponent implements OnInit {
+		idArticle?: string; // En esta variable guardaremos el valor capturado
+		ngOnInit(): void {
+			
+		}
+	}
+	````
