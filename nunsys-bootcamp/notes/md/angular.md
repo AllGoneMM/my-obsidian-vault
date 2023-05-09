@@ -14,6 +14,8 @@
 | `ng serve -o` | Inicia el servidor de desarrollo de Angular y el parámetro `--open` indica que se debe abrir automáticamente en el navegador |
 |  `ng generate component [nombre]`                   |    Crea un nuevo componente con el nombre especificado                         |
 | `ng generate pipe [nombre]` | Crea un nuevo pipe con el nombre indicado |
+| `ng generate class [nombre]` | Crea una nueva clase en nuestro proyecto |
+| `ng generate service [nombre]` | Crea un nuevo servicio en nuestro proyecto |
 ## ANGULAR DIRECTIVAS CHEAT SHEET
 | DIRECTIVA | DESCRIPCION |
 | ------------ | --------------- |
@@ -745,5 +747,264 @@ Las variables de la clase (campos, propiedades) y las variables dentro de nuestr
 - Las variables de nuestros métodos, para ser declaradas es obligatorio que especifiquemos si va a ser una variable o una constante `const` o `let`
 
 >Importante: Es importante utilizar constantes o variables según corresponda
+
+
 ### ARRAYS
 En *TypeScript* los arrays actuan como listas, es decir, que pueden ampliar y reducir su tamaño una vez instanciados.
+
+#### METODOS DE UN ARRAY
+Los *arrays* tienen muchos métodos que nos pueden ser muy útiles a la hora de progamar, algunos de los más usados son los siguientes: 
+
+| METODO  | DESCRIPCION                                                                                                          |
+| ------- | -------------------------------------------------------------------------------------------------------------------- |
+| `push()`  | **Agrega** un elemento al **final** del array   |
+| `unshift()` | **Agrega** un elemento al **principio** del array |
+| `pop()`   | **Elimina** el **último** elemento del array |
+| `shift()` | **Elimina** el **primer** elemento de un array |
+| `splice()` | **Agrega o elimina** elementos de un array  |                                                                            |
+| `slice()` | Crea un nuevo array a partir de una porción del array original                                                     |
+| `forEach()`| Itera sobre cada elemento del array y realiza una operación en cada uno de ellos                                    |
+| `length()` | Nos devuelve un `number` que representa el número total de elementos que contiene el *array* |
+|  `indexOf(valor)`  | Nos devuelve el índice del *array* en el que se encuentra el valor que le pasamos al método por parámetros. Si el elemento no existe, devuelve un `-1` |
+| `short()` | Ordena alfabeticamente el array |
+| `concat(array[])` | Concatena el contenido de un array con el contenido de otro, añadiendo todos los elementos |
+
+### METODOS
+Un método o función tiene la siguiente estructura:\
+``public | private | protected [nombre-del-método]([parámetro-1], [parametro-2] ...) : void | number | string ...``
+>Importante: La visibilidad y lo que devuelve el método se puede omitir, sin embargo, es mejor siempre especificarlo
+
+### ENUMERADOS
+En este apartado vamos a ver cómo definir tipos enumerados en *TypeScript* y su importancia en situaciones en las que se tienen varias opciones fijas. 
+
+Para crear un enumerado, debemos de forma manual añadir un archivo `[NOMBRE-ENUMERACIO].enum.ts`:
+````typescript
+export enum NUMBERS{
+	ONE,
+	TWO,
+	THREE
+}
+````
+>Importante: Es recomendable escribir tanto el nombre del fichero como sus valores en mayúscula, ya que son constantes
+
+>Importante: Los enumerados llevan asignados siempre un valor numérico, por defecto, la primera posición de nuestro enumerado empezará por 0 e irá incrementando de uno en uno. Sin embargo, también podemos forzar el valor de la enumeración de la siguiente manera: `ONE=10`
+
+>Importante: También podemos asignar un valor de tipo `string` a nuestra enumeración, pero si hacemos esto tendremos que asignar un valor de cadena a todas las demás enumeraciones
+
+Para poder hacer uso de nuestras enumeraciones, debemos importar la clase en nuestro fichero *TypeScript*:
+
+````typescript
+import { NUMBERS } from '../shared/NUMBERS.enum'
+````
+
+Una vez importada la enumeración, ya deberíamos de poder usarla sin problema en nuestro código:
+
+````typescript
+private doSomething() : void {
+	const myEnum : NUMBERS = NUMBERS.ONE;
+}
+````
+
+### CLASES
+Mediante la creación de clases podemos crear modelos que representen una estructura de negocio.
+
+Podemos crear una clase de dos maneras:
+- Al igual que una enumeración, creamos el fichero de forma manual que sea `[nombre-clase].model.ts`
+- También podemos crear una clase usando **Angular CLI**:
+	````bash
+	ng generate class Person	
+	````
+	
+>Importante: Al igual que en otros lenguajes orientados a objetos, podemos crear **campos privados con sus respectivos getters y setters**
+
+>Importante: **TypeScript** también tiene **herencia, interfaces y clases abstractas**
+
+### EXTRA
+#### OPTIONAL CHAINING
+El optional chaining es una caracteríastica que nos permite acceder a la propiedad anidada de un objeto evitando errores de compilación si alguna de las propiedades intermedias es `null` o `undefined`;
+
+````typescript
+const city = person?.address?.city;
+````
+
+Esta técnica también se puede aplicar a funciones que devuelven algún valor:
+
+````typescript
+const city = person?.getName?();
+````
+
+#### NULLISH COALESCING
+Se trata de otra característica de *Typescript* que nos permite asignar un valor predeterminado a una variable en caso de que su valor sea `null` o `undefined`.
+
+Esto se hace utilizando dos signos de **interrogación ??** de la siguiente manera:
+````typescript
+const variable = value1 ?? value2;
+````
+
+Esto mismo se puede hacer con funciones:
+````typescript
+const variable = value1 ?? someFunction();
+````
+
+## SERVICIOS
+En este apartado se explica la importancia de los servicios en la arquitectura de Angular y cómo ayudan en la programación de componentes. 
+
+Los componentes son clases que ayudan a dibujar o a obtener datos y enviarlos a algún sitio, por lo tanto, cualquier código un poco más complejo se debe delegar a otro tipo de clases más especializadas que se llaman **clases de servicio** que podemos compartir entre distintos componentes. 
+
+Pongamos que tenemos un componente que necesita **cargar una serie de artículos haciendo una consulta a una base de datos**. Esta información la almacenará en un array de artículos dentro del propio controlador del componente y a continuación lo representará en la vista.
+
+Este tipo de tareas pesadas como la consulta y descarga de datos debe ser relagada a los servicios.
+
+Para implementar un **servicio** debemos hacer lo siguiente:
+1. Debemos crear el servicio, esto lo podemos hacer mediante **Angular CLI** con el comando:
+	````bash
+	ng generate service nombre-servicio	
+	````
+	>Importante: Por defecto este fichero se creará en la ruta `src/app`
+	
+2. Personalizamos nuestro **servicio** de manera que desmpeñe la función que queremos, en este caso la extracción de datos de una base de datos:
+	````typescript
+	import { Injectable } from '@angular/core';
+	
+	@Injectable({providedIn: 'root'})
+	
+	export class MyServiceService {
+	
+	constructor() { }
+
+	public getDataFromDB() : ArticleModel[] {
+			const articles : ArticleModel[] = //...Código para obtencióne de datos
+			return articles;
+		}
+	}
+	````
+3. Importamos e inyectamos en el constructor de nuestro componente el servicio que acabamos de crear:
+	````typescript
+	import { MyService } from 'ruta/my-service.service';
+
+	export class ArticleComponent {
+		constructor(private myService : MyService) {}
+	}
+	````
+4. Creamos una variable donde almacenaremos la lista de artículos que nos va a devolver el servicio y asignamos a la variable la función creada anteriormente en el punto de código donde lo necesitemos:
+	````typescript
+	export class ArticleComponent implements OnInit {
+		articles: ArticleModel[] = [];
+
+		ngOnInit() : void {
+			this.articles = this.myService.getDataFromDB;
+		}
+	}
+	````
+
+## SUBCOMPONENTES
+
+En este apartado profundizamos en el concepto de componentes y su uso en visualizaciones. 
+
+Los **subcomponentes** son **componentes** anidados, que se utilizan para dividir el dibujo de la página y poder ser reutilizados por otros componentes entre distintas visualizaciones. 
+
+### BASE64
+Es un método para poder poder **codificar imágenes o documentos** en **formato ASCII**. Esto hace posible la transmisión de datos binarios a través de sistemas que solo pueden manejar texto.
+
+Para poder realizar este tipo de conversiones podemos utilizar una página web como [Base64.Guru](https://base64.guru/converter/encode/image).
+
+### IMPLEMENTACION DE UN SUBCOMPONENTE
+
+Un **subcomponente** tiene el mismo comportamiento que un componente normal, la única diferencia es que lo usaremos de manera anidada en otros componentes.
+
+Debemos hacer uso de subcomponentes siempre que sea posible. Esto nos permite tener un código más limpio, ordenado y desacoplado.
+#### PASO DE PARAMETRO DESDE UN COMPONENTE PADRE 
+Algo imporante a tener en cuenta, es que muchas veces necesitaremos **pasarle algún tipo de parámetro** a nuestro subcomponente.
+>Ejemplo: Nuestro componente principal obtiene información de un servicio, como una lista de artículos. Necesitamos recorrer esta lista mediante un `ngFor`, pasando un artículo a cada subcomponente que se encargará de su representación
+
+Para esto, nuestro **subcomponente** deberá tener una propiedad con una etiqueta especial:
+````typescript
+import {Component, Input, OnInit} from '@angular/core';
+import { Article } from '../article.model';
+
+@Component({
+	selector: 'app-article-card',
+	templateUrl: './article-card.component.html',
+	styleUrls ['./article-card.component.scss']
+})
+
+export class ArticleCardComponent implements OnInit {
+	@Input() article? : Article;
+
+	constructor() { }
+
+	ngOnInit() : void {
+	
+	}
+}
+````
+>Importante: Con la anotación `@Input()` estamos indicando que este componente puede recibir valores de entrada desde un componente padre 
+
+En este ejemplo tenemos el siguiente subcomponente, que va a recibir un objeto `Article` a través del componente principal y va a cargar sus propiedades dentro de su vista, que será un elemento de *Bootstrap* llamado *card*.
+
+Fichero **HTML** de nuestro subcomponente:
+````html
+<div class="card" style="width: 18rem;" *ngIf="article">
+	<div class="card-body">
+		<h5 class="card-title">{{article.getName()}}</h5>
+		<p class="card-text">{{article.getDescription}}</p>
+		<a [routerLink]="['/article-detail',article.getId()]" class="btn btn-primary">Ver artículo</a>
+	</div>
+</div>
+````
+>Importante: Debemos usar la directiva `ngIf`, sino obtendremos un error de compilación
+
+Solo nos queda utilizar nuestro subcomponente dentro de nuestro componente principal y pasarle por parámetros nuestro objeto `Article`. Para ello debemos utilizar el **selector** de nuestro subcomponente y como atributo indicarle el parámetro que queramos pasarle:
+````html
+<app-article-card *ngFor="let a of articles" [article]="a"></app-article-card>
+````
+
+
+#### EVENTOS
+Los eventos son comunicaciones o notificaciones que establecen los componentes hijos con su componente padre cuando se produce algún tipo de acción dentro de estos que queremos que modifique o alerte de alguna manera al componente padre.
+
+En el ejemplo anterior, nuestro supcomponente se encargaba de realizar una navegación a otro componente al hacer click. Imaginemos que lo que queremos hacer es *Añadir al carrito de compra* el artículo a nuestro componente principal.
+
+Los demás elementos que contiene nuestro componente padre están fuera del alcance del componente hijo, por lo tanto, debemos notificarle de que se ha producido una acción y que sea el propio padre el que añada el artículo al carrito de compra.
+
+Esto lo podemos conseguir mediante la anotación `@Output()` y `EventEmitter` de la librería de `@angular/core`:
+
+````typescript
+import {Component, Input, OnInit, Output} from '@angular/core';
+import { Article } from '../article.model';
+
+@Component({
+	selector: 'app-article-card',
+	templateUrl: './article-card.component.html',
+	styleUrls ['./article-card.component.scss']
+})
+
+export class ArticleCardComponent implements OnInit {
+	@Input() article? : Article;
+	@Output() click: EventEmitter<number> = new EventEmitter<number>(); // Creación de un evento
+	constructor() { }
+
+	ngOnInit() : void {
+	
+	}
+
+	public addToBasketBtn() : void {
+	this.click.emit(this.article?.getId());
+	}
+}
+````
+````html
+<div class="card" style="width: 18rem;" *ngIf="article">
+	<div class="card-body">
+		<h5 class="card-title">{{article.getName()}}</h5>
+		<p class="card-text">{{article.getDescription}}</p>
+		<a (click)="addToBasketBtn()" class="btn btn-primary">Ver artículo</a>
+	</div>
+</div>
+````
+
+A continuación, debemos modificar el código en nuestro componente padre de manera que pueda recibir este evento y actuar en consecuencia:
+
+````html
+<app-article-card (click)="addToBasket()" *ngFor="let a of articles" [article]="a"></app-article-card>
+````
