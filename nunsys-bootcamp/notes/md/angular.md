@@ -1,4 +1,74 @@
 # ANGULAR
+INDICE
+
+1. [[#NODE CHEAT SHEET|NODE CHEAT SHEET]]
+1. [[#ANGULAR CLI CHEAT SHEET|ANGULAR CLI CHEAT SHEET]]
+1. [[#ANGULAR DIRECTIVAS CHEAT SHEET|ANGULAR DIRECTIVAS CHEAT SHEET]]
+1. [[#ANGULAR TYPESCRIPT CHEAT SHEET|ANGULAR TYPESCRIPT CHEAT SHEET]]
+1. [[#INTRODUCCION|INTRODUCCION]]
+	1. [[#INTRODUCCION#QUE ES ANGULAR|QUE ES ANGULAR]]
+	1. [[#INTRODUCCION#OTROS FRAMEWORKS DE JAVASCRIPT|OTROS FRAMEWORKS DE JAVASCRIPT]]
+1. [[#ARQUITECTURA|ARQUITECTURA]]
+	1. [[#ARQUITECTURA#COMPONENTES|COMPONENTES]]
+		1. [[#COMPONENTES#ESTRUCTURA DE UN COMPONENTE|ESTRUCTURA DE UN COMPONENTE]]
+	1. [[#ARQUITECTURA#SERVICIOS|SERVICIOS]]
+	1. [[#ARQUITECTURA#DIRECTIVAS|DIRECTIVAS]]
+	1. [[#ARQUITECTURA#PIPES|PIPES]]
+	1. [[#ARQUITECTURA#MODULOS|MODULOS]]
+	1. [[#ARQUITECTURA#ENRUTAMIENTO|ENRUTAMIENTO]]
+1. [[#INSTALACION DE ANGULAR|INSTALACION DE ANGULAR]]
+1. [[#ESTRUCTURA DE UN PROYECTO ANGULAR|ESTRUCTURA DE UN PROYECTO ANGULAR]]
+1. [[#CONFIGURACION PARA MAXIMA COMPATIBILIDAD|CONFIGURACION PARA MAXIMA COMPATIBILIDAD]]
+1. [[#COMPONENTES|COMPONENTES]]
+	1. [[#COMPONENTES#CONTROLADOR|CONTROLADOR]]
+	1. [[#COMPONENTES#ESTABLECER COMPONENTE DE INICIO|ESTABLECER COMPONENTE DE INICIO]]
+	1. [[#COMPONENTES#INTERPOLACION|INTERPOLACION]]
+1. [[#ENRUTAMIENTO|ENRUTAMIENTO]]
+	1. [[#ENRUTAMIENTO#BASES|BASES]]
+	1. [[#ENRUTAMIENTO#NAVEGACION CON ENLACES|NAVEGACION CON ENLACES]]
+	1. [[#ENRUTAMIENTO#NAVEGACION CON CODIGO|NAVEGACION CON CODIGO]]
+	1. [[#ENRUTAMIENTO#NAVEGACION CON BOOTSTRAP NAVBAR|NAVEGACION CON BOOTSTRAP NAVBAR]]
+		1. [[#NAVEGACION CON BOOTSTRAP NAVBAR#INSTALAR BOOTSTRAP EN ANGULAR|INSTALAR BOOTSTRAP EN ANGULAR]]
+			1. [[#INSTALAR BOOTSTRAP EN ANGULAR#CDN|CDN]]
+			1. [[#INSTALAR BOOTSTRAP EN ANGULAR#LOCAL|LOCAL]]
+		1. [[#NAVEGACION CON BOOTSTRAP NAVBAR#UTILIZANDO BOOTSTRAP NAVBAR|UTILIZANDO BOOTSTRAP NAVBAR]]
+			1. [[#UTILIZANDO BOOTSTRAP NAVBAR#DESTACANDO ELEMENTOS ACTIVOS CON BOOTSTRAP|DESTACANDO ELEMENTOS ACTIVOS CON BOOTSTRAP]]
+	1. [[#ENRUTAMIENTO#PASO DE PARAMETROS EN LA URL|PASO DE PARAMETROS EN LA URL]]
+	1. [[#ENRUTAMIENTO#PASO DE PARAMETROS CON QUERY|PASO DE PARAMETROS CON QUERY]]
+1. [[#DIRECTIVAS|DIRECTIVAS]]
+	1. [[#DIRECTIVAS#NGFOR|NGFOR]]
+	1. [[#DIRECTIVAS#NGIF|NGIF]]
+	1. [[#DIRECTIVAS#NGCLASS|NGCLASS]]
+1. [[#PIPES|PIPES]]
+	1. [[#PIPES#PIPES DE ANGULAR|PIPES DE ANGULAR]]
+		1. [[#PIPES DE ANGULAR#UPPERCASE|UPPERCASE]]
+		1. [[#PIPES DE ANGULAR#LOWECASE|LOWECASE]]
+		1. [[#PIPES DE ANGULAR#TITLECASE|TITLECASE]]
+		1. [[#PIPES DE ANGULAR#NUMBER|NUMBER]]
+			1. [[#NUMBER#LOCALE|LOCALE]]
+		1. [[#PIPES DE ANGULAR#DATE|DATE]]
+	1. [[#PIPES#PIPE PERSONALIZADO|PIPE PERSONALIZADO]]
+1. [[#TYPESCRIPT|TYPESCRIPT]]
+	1. [[#TYPESCRIPT#TIPOS|TIPOS]]
+		1. [[#TIPOS#DECLARACION DE VARIABLES|DECLARACION DE VARIABLES]]
+	1. [[#TYPESCRIPT#ARRAYS|ARRAYS]]
+		1. [[#ARRAYS#METODOS DE UN ARRAY|METODOS DE UN ARRAY]]
+	1. [[#TYPESCRIPT#METODOS|METODOS]]
+	1. [[#TYPESCRIPT#ENUMERADOS|ENUMERADOS]]
+	1. [[#TYPESCRIPT#CLASES|CLASES]]
+	1. [[#TYPESCRIPT#EXTRA|EXTRA]]
+		1. [[#EXTRA#OPTIONAL CHAINING|OPTIONAL CHAINING]]
+		1. [[#EXTRA#NULLISH COALESCING|NULLISH COALESCING]]
+1. [[#SERVICIOS|SERVICIOS]]
+1. [[#SUBCOMPONENTES|SUBCOMPONENTES]]
+	1. [[#SUBCOMPONENTES#BASE64|BASE64]]
+	1. [[#SUBCOMPONENTES#IMPLEMENTACION DE UN SUBCOMPONENTE|IMPLEMENTACION DE UN SUBCOMPONENTE]]
+		1. [[#IMPLEMENTACION DE UN SUBCOMPONENTE#PASO DE PARAMETRO DESDE UN COMPONENTE PADRE|PASO DE PARAMETRO DESDE UN COMPONENTE PADRE]]
+		1. [[#IMPLEMENTACION DE UN SUBCOMPONENTE#EVENTOS|EVENTOS]]
+1. [[#MODULOS|MODULOS]]
+	1. [[#MODULOS#CREAR UN NUEVO MODULO|CREAR UN NUEVO MODULO]]
+	1. [[#MODULOS#FORZAR LA CARGA DE MODULOS|FORZAR LA CARGA DE MODULOS]]
+
 ## NODE CHEAT SHEET
 | COMANDO | DESCRIPCION |
 | ------------- | --------------- |
@@ -16,6 +86,7 @@
 | `ng generate pipe [nombre]` | Crea un nuevo pipe con el nombre indicado |
 | `ng generate class [nombre]` | Crea una nueva clase en nuestro proyecto |
 | `ng generate service [nombre]` | Crea un nuevo servicio en nuestro proyecto |
+| `ng generate module [nombre] --route [ruta] --module [nombre-módulo]` | Este comando crea un nuevo módulo. Con `--route` le indicamos a Angular que cargue dicho módulo cuando accedamos a la ruta indicada. Con `--module` le indicamos el módulo donde queremos registrar el nuevo  |
 ## ANGULAR DIRECTIVAS CHEAT SHEET
 | DIRECTIVA | DESCRIPCION |
 | ------------ | --------------- |
@@ -1007,4 +1078,30 @@ A continuación, debemos modificar el código en nuestro componente padre de man
 
 ````html
 <app-article-card (click)="addToBasket()" *ngFor="let a of articles" [article]="a"></app-article-card>
+````
+
+
+## MODULOS
+
+Todos los engranajes de **Angular** se pueden englobar dentro de módulos. Los módulos permiten agrupar los diferentes componentes de nuestra aplicación **según su funcionalidad**. 
+
+Esto permite que nuestra aplicación esté **mejor estructurada, además de conseguir un rendimiento y carga más rápida**, ya que va cargando los diferentes módulos según los necesite. Además de todos esto permite la **reutilización** de estos módulos en otros proyectos.
+
+### CREAR UN NUEVO MODULO
+Para poder generar un nuevo módulo empleamos **Angular CLI**:
+````bash
+ng generate module nombre --route ruta --module register.module
+````
+>Importante: Este comando genera un módulo con el nombre especificado. En el parámetro `--route` indicamos una ruta, esto lo que hace es que cuando en la **URL** se acceda a esta ruta, se cargará nuestro módulo. En el parámetro `--module` le debemos de indicar a **Angular** el módulo donde queramos registrar el módulo a crear
+
+Con este comando podemos crear los módulos que necesitemos y estos se registrarán automáticamente en nuestro fichero de **rutas** y en nuestro **módulo raíz**.
+
+### FORZAR LA CARGA DE MODULOS
+Normalmente usaremos la carga por defecto de nuestros módulos, que será *Lazy Loading*, sin embargo, si por algún motivo necesitamos que se cargen todos los módulos podemos añadir el siguiente parámetro en nuestro módulo:
+
+````typescript
+@NgModule({
+	imports: [RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})],
+	exports: [RouterModule]
+})
 ````
